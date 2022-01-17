@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView  } from 'react-native';
 import { useSelector } from 'react-redux';
 import LottieView from "lottie-react-native";
 import firebase from "../firebase";
@@ -37,31 +37,39 @@ export default function OrderCompleted() {
               setLastOrder(doc.data());
           });
       });
-      return unsubscribe();
-  }, [])
+      return () => unsubscribe();
+  }, []);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <LottieView
-          style={{ height: 200, alignSelf: "center", marginBottom: 30 }}
-          source={require("../assets/animations/74644-add-to-basket.json")}
-          autoPlay
-          speed={0.5}
-          loop={false}
-        />
-            <Text>Ta commande à {magasinName}  est de {totalUSD}</Text>
-            <MenuItems
-            vetements={lastOrder.items}
-            hideCheckbox={true}
-            marginLeft={10}
-          />
-        <LottieView
-            style={{ height: 300, alignSelf: "center", marginBottom: 30 }}
-            source={require("../assets/animations/71390-shopping-cart-loader.json")}
-            autoPlay
-            speed={0.5}
-            loop={false}
-        />
+          <View style={{
+          margin: 15,
+          alignItems: "center",
+          height: "100%",
+        }}>
+            <LottieView
+              style={{ height: 200, alignSelf: "center", marginBottom: 30 }}
+              source={require("../assets/animations/74644-add-to-basket.json")}
+              autoPlay
+              speed={0.5}
+              loop={false}
+            />
+                <Text style={{ fontSize: 20, fontWeight: "bold" }}>Ta commande à {magasinName} est de ${totalUSD}</Text>
+              <ScrollView>
+                <MenuItems
+                vetements={lastOrder.items}
+                hideCheckbox={true}
+                marginLeft={10}
+              />
+            </ScrollView>
+            <LottieView
+                style={{ height: 200, alignSelf: "center", marginBottom: 30 }}
+                source={require("../assets/animations/36605-shopping-cart.json")}
+                autoPlay
+                speed={0.5}
+                loop={false}
+            />
+          </View>
         </SafeAreaView>
     );
 }
